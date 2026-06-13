@@ -1,0 +1,18 @@
+{
+  "name": "wave-alpha",
+  "version": "1.0.0",
+  "description": "WAVE Alpha - Human Performance Research Initiative",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "LATENCY",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

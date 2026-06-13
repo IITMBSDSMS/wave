@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WAVE Alpha - Human Performance Research Initiative</title>
+  <!-- Google Fonts: Inter for UI, Roboto Mono for Telemetry numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <!-- HEADER CARD -->
+    <header class="dashboard-card header-card">
+      <div class="header-content">
+        <div class="header-logo-group">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <h1 class="header-title" style="margin: 0;">WAVE Alpha</h1>
+            <div class="header-logos">
+              <div class="logo-badge latency-logo-badge" title="Latency">
+                <img src="latency_logo.png" alt="Latency Logo">
+              </div>
+              <div class="logo-badge" title="Healix Technologies">
+                <img src="healix_logo.png" alt="Healix Logo">
+              </div>
+            </div>
+          </div>
+          <p class="header-subtitle" style="margin-top: 4px;">INDIA'S FIRST COGNITIVE READINESS & HUMAN PERFORMANCE RESEARCH INITIATIVE</p>
+          <div class="header-brand">BY <strong class="brand-avennix">LATENCY</strong> &bull; POWERED BY <strong class="brand-avennix">BIOLABS</strong> &bull; INITIATIVE BY <strong class="brand-avennix">LATENCY</strong> (PARENT COMPANY - HEALIX TECHNOLOGIES PVT. LIMITED)</div>
+        </div>
+        <div class="header-actions">
+          <button id="admin-toggle" class="icon-button" aria-label="Researcher Login" title="Researcher Console Login">
+            <i data-lucide="lock" class="lock-icon-locked"></i>
+            <i data-lucide="unlock" class="lock-icon-unlocked hidden"></i>
+          </button>
+          <button id="theme-toggle" class="icon-button" aria-label="Toggle Theme">
+            <i data-lucide="moon" class="theme-icon-dark"></i>
+            <i data-lucide="sun" class="theme-icon-light"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN DASHBOARD GRID -->
+    <main class="dashboard-grid">
+      
+      <!-- LEFT COLUMN: SIDEBAR -->
+      <section class="sidebar-column">
+        
+        <!-- PARTICIPANT PORTAL CONTAINER -->
+        <article class="dashboard-card profile-card">
+          
+          <!-- STATE 1: ACCESS/LOGIN SCREEN -->
+          <div id="portal-login-view" class="card-body">
+            <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 12px;">
+              <div class="logo-badge latency-logo-badge" title="Latency">
+                <img src="latency_logo.png" alt="Latency Logo">
+              </div>
+              <div class="logo-badge" title="Healix Technologies">
+                <img src="healix_logo.png" alt="Healix Logo">
+              </div>
+            </div>
+            <div style="text-align: center; margin-bottom: 8px;">
+              <h2 style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.05em; text-transform: uppercase;">Participant Portal</h2>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Enter your registered email to log your daily assessments and view your timeline.</p>
+            </div>
+            
+            <form id="portal-access-form" class="form-group" style="gap: 12px;">
+              <div class="form-group">
+                <label for="portal-email">Registered Email Address</label>
+                <input type="email" id="portal-email" placeholder="e.g. mahima@latency.systems" required>
+              </div>
+              <button type="submit" class="button button-primary button-block">
+                <i data-lucide="key" class="button-icon"></i>
+                Access Daily Log
+              </button>
+            </form>
+            
+            <hr class="card-divider">
+            
+            <div style="text-align: center; font-size: 0.75rem; color: var(--text-secondary);">
+              First time logging? <a href="#" id="link-go-enroll" style="color: var(--brand-primary); font-weight: 600; text-decoration: none;">Enroll in study here</a>
+            </div>
+          </div>
+
+          <!-- STATE 2: ENROLLMENT FORM -->
+          <div id="portal-enroll-view" class="card-body hidden">
+            <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 12px;">
+              <div class="logo-badge latency-logo-badge" title="Latency">
+                <img src="latency_logo.png" alt="Latency Logo">
+              </div>
+              <div class="logo-badge" title="Healix Technologies">
+                <img src="healix_logo.png" alt="Healix Logo">
+              </div>
+            </div>
+            <div style="margin-bottom: 8px;">
+              <h2 style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.05em; text-transform: uppercase;">Study Enrollment</h2>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Register once to initiate your 30-day performance tracking protocol.</p>
+            </div>
+            
+            <form id="enrollment-form" style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="form-group">
+                <label for="input-name">Full Name</label>
+                <input type="text" id="input-name" placeholder="e.g. Dr. Mahima Sharma" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="input-email">Email Address</label>
+                <input type="email" id="input-email" placeholder="e.g. mahima@latency.systems" required>
+              </div>
+
+              <div class="form-group">
+                <label for="input-profession">Profession / Specialization</label>
+                <select id="input-profession" required>
+                  <option value="" disabled selected>Select your profession...</option>
+                  <option value="Neurologist">Neurologist</option>
+                  <option value="Sleep Researcher">Sleep Researcher</option>
+                  <option value="Biomedical Engineer">Biomedical Engineer</option>
+                  <option value="Aerospace Engineer">Aerospace Engineer</option>
+                  <option value="Astronaut Candidate">Astronaut Candidate</option>
+                  <option value="Flight Surgeon">Flight Surgeon</option>
+                  <option value="Other">Other Profession</option>
+                </select>
+              </div>
+              
+              <!-- Custom Profession Input (hidden by default) -->
+              <div class="form-group hidden" id="custom-profession-group">
+                <label for="input-custom-profession">Specify Profession</label>
+                <input type="text" id="input-custom-profession" placeholder="e.g. Space Biologist">
+              </div>
+
+              <button type="submit" class="button button-primary button-block">
+                <i data-lucide="plus" class="button-icon"></i>
+                Register & Start
+              </button>
+            </form>
+            
+            <hr class="card-divider">
+            
+            <div style="text-align: center; font-size: 0.75rem; color: var(--text-secondary);">
+              Already enrolled? <a href="#" id="link-go-login" style="color: var(--brand-primary); font-weight: 600; text-decoration: none;">Log in here</a>
+            </div>
+          </div>
+
+          <!-- STATE 3: PERSONALIZED DAILY WORKSPACE -->
+          <div id="portal-workspace-view" class="card-body hidden">
+            <!-- Workspace Welcome Header -->
+            <div class="workspace-header" style="border-bottom: 1px solid var(--border-color-subtle); padding-bottom: 12px; margin-bottom: 4px;">
+              <span style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--brand-primary); letter-spacing: 0.05em; display: block;">Participant Workspace</span>
+              <h2 id="workspace-user-name" style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">Dr. Mahima Sharma</h2>
+              <span id="workspace-user-profession" class="badge badge-secondary" style="margin-top: 4px; display: inline-block;">Neurologist</span>
+            </div>
+            
+            <!-- 30-Day Grid Calendar -->
+            <div class="grid-section" style="margin-bottom: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em;">30-Day Progress</span>
+                <span id="workspace-progress-text" style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--text-secondary);">0 / 30 Days</span>
+              </div>
+              <div id="progress-days-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
+                <!-- 30 calendar days injected via JS -->
+              </div>
+            </div>
+            
+            <hr class="card-divider">
+
+            <!-- DAILY LOG ASSESSMENT FORM -->
+            <form id="daily-log-form" style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="workspace-active-day-label" style="font-size: 0.85rem; font-weight: 700; color: var(--brand-primary);">Day 1 Assessment</span>
+                <span class="badge badge-primary" id="workspace-day-status-badge">Unlogged</span>
+              </div>
+
+              <div class="form-group">
+                <div class="flex-label-value" style="display: flex; justify-content: space-between; align-items: center;">
+                  <label for="log-sleep-hours" style="font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);">Sleep Duration</label>
+                  <span class="mono-value" id="val-sleep-hours" style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;">7.0 hrs</span>
+                </div>
+                <input type="range" id="log-sleep-hours" min="3" max="12" step="0.5" value="7" style="width:100%;">
+              </div>
+
+              <div class="form-group">
+                <div class="flex-label-value" style="display: flex; justify-content: space-between; align-items: center;">
+                  <label for="log-pss-score" style="font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);">Stress Level (PSS)</label>
+                  <span class="mono-value" id="val-pss-score" style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;">10 / 40</span>
+                </div>
+                <input type="range" id="log-pss-score" min="0" max="40" step="1" value="10" style="width:100%;">
+              </div>
+
+              <div class="form-group">
+                <div class="flex-label-value" style="display: flex; justify-content: space-between; align-items: center;">
+                  <label for="log-memory-score" style="font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);">Memory (N-Back d')</label>
+                  <span class="mono-value" id="val-memory-score" style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;">2.5 d'</span>
+                </div>
+                <input type="range" id="log-memory-score" min="0.5" max="4.0" step="0.1" value="2.5" style="width:100%;">
+              </div>
+
+              <div class="form-group">
+                <div class="hrv-inputs-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                  <div class="form-group-sub" style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="log-hrv-rmssd" style="font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);">RMSSD (ms)</label>
+                    <input type="number" id="log-hrv-rmssd" min="10" max="150" value="45" required>
+                  </div>
+                  <div class="form-group-sub" style="display: flex; flex-direction: column; gap: 4px;">
+                    <label for="log-hrv-hf" style="font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);">HF Power (ms²)</label>
+                    <input type="number" id="log-hrv-hf" min="50" max="2000" value="500" required>
+                  </div>
+                </div>
+                <button type="button" id="btn-wearable-sync" class="button button-outline button-block button-sm" style="margin-top: 8px;">
+                  <i data-lucide="refresh-cw" class="button-icon"></i>
+                  Mock Wearable Sync
+                </button>
+              </div>
+
+              <!-- ACTIVE ASSESSMENTS (MINI GAMES) -->
+              <div class="assessment-games-section" style="border: 1px solid var(--border-color-subtle); border-radius: 4px; padding: 12px; background-color: var(--bg-primary);">
+                <span class="section-label-sub" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: block; margin-bottom: 8px;">Active Cognitive Assays</span>
+                
+                <!-- PVT GAME -->
+                <div class="game-wrapper" id="pvt-game-wrapper">
+                  <button type="button" id="btn-pvt-start" class="button button-outline button-sm button-block">
+                    <i data-lucide="zap" class="button-icon"></i>
+                    Start Alertness Test (PVT)
+                  </button>
+                  <div id="pvt-game-board" class="game-board hidden" style="background-color: #0f172a; border-radius: 4px; padding: 20px; text-align: center; color: #fff; cursor: pointer; user-select: none; font-weight: 600; font-size: 0.85rem; margin-top: 6px; transition: background-color 0.1s;">
+                    <span id="pvt-instructions">Click to Start</span>
+                  </div>
+                  <input type="hidden" id="log-pvt-rt" value="250">
+                </div>
+
+                <!-- STROOP GAME -->
+                <div class="game-wrapper" id="stroop-game-wrapper" style="margin-top: 8px;">
+                  <button type="button" id="btn-stroop-start" class="button button-outline button-sm button-block">
+                    <i data-lucide="eye" class="button-icon"></i>
+                    Start Executive Test (Stroop)
+                  </button>
+                  <div id="stroop-game-board" class="game-board hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 4px; padding: 14px; text-align: center; margin-top: 6px;">
+                    <div id="stroop-word-display" style="font-weight: 700; font-size: 1.25rem; margin-bottom: 10px;">RED</div>
+                    <div id="stroop-choices-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                      <button type="button" class="stroop-choice-btn button button-outline button-sm" data-color="red">Red</button>
+                      <button type="button" class="stroop-choice-btn button button-outline button-sm" data-color="blue">Blue</button>
+                      <button type="button" class="stroop-choice-btn button button-outline button-sm" data-color="green">Green</button>
+                      <button type="button" class="stroop-choice-btn button button-outline button-sm" data-color="yellow">Yellow</button>
+                    </div>
+                  </div>
+                  <input type="hidden" id="log-stroop-interference" value="110">
+                </div>
+              </div>
+
+              <div id="lock-banner" class="latency-alert hidden" style="margin-bottom: 12px;">
+                <i data-lucide="shield-alert" class="alert-icon"></i>
+                <div id="lock-banner-text">
+                  <strong>Logging Locked:</strong> Only one daily log is permitted every 24 hours. Next unlock in --h --m.
+                </div>
+              </div>
+
+              <button type="submit" class="button button-primary button-block" style="margin-top: 4px;" id="btn-save-log">
+                <i data-lucide="check" class="button-icon"></i>
+                Save Day Log
+              </button>
+            </form>
+            
+            <hr class="card-divider">
+            
+            <div style="text-align: center; font-size: 0.75rem;">
+              <a href="#" id="btn-exit-portal" style="color: var(--btn-danger-text); font-weight: 600; text-decoration: none;">Exit Workspace / Switch User</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- MISSION STATEMENT CARD -->
+        <article class="dashboard-card mission-card">
+          <div class="card-header">
+            <div class="header-title-group">
+              <i data-lucide="globe" class="card-icon"></i>
+              <h2>RESEARCH MISSION</h2>
+            </div>
+            <span class="badge badge-secondary">LATENCY</span>
+          </div>
+          <div class="card-body">
+            <p class="mission-text">
+              Advancing human health on Earth and beyond. Developing cognitive readiness and fatigue countermeasure systems for deep-space environments.
+            </p>
+            <hr class="card-divider">
+            <div class="latency-alert">
+              <i data-lucide="shield-alert" class="alert-icon"></i>
+              <div>
+                <strong>LATENCY Architecture:</strong> When Earth is too far away, cognitive diagnostics execute locally on edge microcontrollers to bypass signal propagation latencies.
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT COLUMN: MAIN PANEL (ADMIN ONLY) -->
+      <section class="main-column admin-only">
+        
+        <!-- TELEMETRY BLOCK GRID CARD -->
+        <article class="dashboard-card telemetry-card">
+          <div class="card-header">
+            <div class="header-title-group">
+              <i data-lucide="activity" class="card-icon"></i>
+              <h2>COGNITIVE READINESS TELEMETRY</h2>
+            </div>
+            <span class="badge badge-secondary">Guidelines: NASA HRP & ESC</span>
+          </div>
+          
+          <div class="card-body">
+            
+            <!-- LARGE OUTPUT: FATIGUE RISK INDEX (FRI) -->
+            <div class="fri-output-block">
+              <div class="fri-header">
+                <span class="fri-label">Fatigue Risk Index (FRI)</span>
+                <span class="fri-value-mono" id="metric-fri-value">0%</span>
+              </div>
+              <div class="progress-bar-container fri-progress-container">
+                <div class="progress-bar" id="metric-fri-bar" style="width: 0%"></div>
+              </div>
+              <div class="fri-footer">
+                <span class="fri-status-label" id="metric-fri-status">OPTIMAL READINESS (GREEN ZONE)</span>
+              </div>
+            </div>
+
+            <hr class="card-divider">
+
+            <div class="telemetry-grid">
+              
+              <!-- 1. Sleep: PSQI -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">Sleep (PSQI)</span>
+                  <span class="block-value-mono" id="metric-sleep-value">0 / 21</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-sleep-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-sleep-percent">0%</span>
+                  <span class="block-status" id="metric-sleep-status">Good Sleep Quality</span>
+                </div>
+              </div>
+
+              <!-- 2. Stress: PSS -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">Stress (PSS)</span>
+                  <span class="block-value-mono" id="metric-stress-value">0 / 40</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-stress-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-stress-percent">0%</span>
+                  <span class="block-status" id="metric-stress-status">Low Stress</span>
+                </div>
+              </div>
+
+              <!-- 3. Alertness: PVT -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">Alertness (PVT)</span>
+                  <span class="block-value-mono" id="metric-pvt-value">-- ms</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-pvt-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-pvt-percent">0%</span>
+                  <span class="block-status" id="metric-pvt-status">Vigilance RT</span>
+                </div>
+              </div>
+
+              <!-- 4. Memory: N-Back -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">Memory (N-Back)</span>
+                  <span class="block-value-mono" id="metric-memory-value">-- d'</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-memory-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-memory-percent">0%</span>
+                  <span class="block-status" id="metric-memory-status">Sensitivity</span>
+                </div>
+              </div>
+
+              <!-- 5. Executive Function: Stroop -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">Executive (Stroop)</span>
+                  <span class="block-value-mono" id="metric-control-value">-- ms</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-control-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-control-percent">0%</span>
+                  <span class="block-status" id="metric-control-status">Interference</span>
+                </div>
+              </div>
+
+              <!-- 6. Physiology: HRV (RMSSD, HF) -->
+              <div class="telemetry-block">
+                <div class="block-header">
+                  <span class="block-label">HRV (RMSSD, HF)</span>
+                  <span class="block-value-mono" id="metric-hrv-value">-- ms</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" id="metric-hrv-bar" style="width: 0%"></div>
+                </div>
+                <div class="block-footer">
+                  <span class="block-percent" id="metric-hrv-percent">0%</span>
+                  <span class="block-status" id="metric-hrv-status">HF: -- ms²</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- INFO / WARNING BAR -->
+            <div class="info-banner">
+              <i data-lucide="info" class="info-icon"></i>
+              <p>Edge diagnostic node calibrated for microgravity autonomic adaptation and real-time human performance modeling.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PARTICIPANT LEDGER CARD -->
+        <article class="dashboard-card ledger-card">
+          <div class="card-header flex-header">
+            <div class="header-title-group">
+              <i data-lucide="list" class="card-icon"></i>
+              <h2>PARTICIPANT LEDGER</h2>
+            </div>
+            
+            <div class="action-buttons-group">
+              <button id="btn-export" class="button button-outline button-sm">
+                <i data-lucide="download" class="button-icon"></i>
+                Export CSV
+              </button>
+              <button id="btn-mock" class="button button-outline button-sm">
+                <i data-lucide="database" class="button-icon"></i>
+                Generate Mock Data
+              </button>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            
+            <!-- SEARCH AND FILTER ROW -->
+            <div class="filter-row">
+              <div class="search-input-wrapper">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="search-participants" placeholder="Search registered participants by name, email, or profession...">
+              </div>
+            </div>
+
+            <!-- TABLE CONTAINER -->
+            <div class="table-container">
+              <table id="participants-table">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>PROFESSION</th>
+                    <th>DATE ENROLLED</th>
+                    <th>STATUS</th>
+                    <th class="text-right">ANALYTICS</th>
+                  </tr>
+                </thead>
+                <tbody id="table-body">
+                  <!-- Injected via JavaScript -->
+                  <tr class="empty-row-placeholder">
+                    <td colspan="6" class="text-center text-muted">
+                      No study participants registered yet. Enter details on the left or generate mock data.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- PAGINATION CONTROLS -->
+            <div class="pagination-controls" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 0 4px; font-size: 0.75rem;">
+              <span id="pagination-info" class="text-muted" style="font-weight: 500;">Showing 0-0 of 0 participants</span>
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-page-prev" class="button button-outline button-sm" disabled>
+                  <i data-lucide="chevron-left" class="button-icon"></i>
+                  Previous
+                </button>
+                <button id="btn-page-next" class="button button-outline button-sm" disabled>
+                  Next
+                  <i data-lucide="chevron-right" class="button-icon" style="margin-left: 4px; margin-right: 0;"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </article>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="dashboard-footer">
+      <p>&copy; 2026 WAVE Alpha Research Initiative. By <strong>LATENCY</strong> &bull; Powered by <strong>BIOLABS</strong> (An Initiative by <strong>LATENCY</strong>, Parent Company - Healix Technologies Pvt. Limited). Latency Mitigation Edge Core Node.</p>
+      <div class="footer-logos" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px;">
+        <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Initiative Partners:</span>
+        <div class="logo-badge latency-logo-badge" style="height: 22px; width: 22px; padding: 2px;" title="Latency">
+          <img src="latency_logo.png" alt="Latency Logo" style="height: 16px; width: 16px;">
+        </div>
+        <div class="logo-badge" style="height: 22px; padding: 2px 6px;" title="Healix Technologies">
+          <img src="healix_logo.png" alt="Healix Logo" style="height: 14px;">
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- 30-DAY PERFORMANCE REPORT MODAL -->
+  <div id="report-modal" class="modal-overlay hidden">
+    <div class="modal-container dashboard-card">
+      <div class="card-header modal-header">
+        <div class="header-title-group">
+          <i data-lucide="trending-up" class="card-icon"></i>
+          <h2>HUMAN PERFORMANCE & FATIGUE DIAGNOSTICS REPORT</h2>
+        </div>
+        <button type="button" id="btn-close-modal" class="icon-button" aria-label="Close Modal" title="Close Report">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="card-body modal-body">
+        
+        <!-- Participant Summary Header -->
+        <div class="report-profile-banner">
+          <div class="profile-meta-group">
+            <span class="report-meta-label">Participant:</span>
+            <strong id="report-p-name">Dr. Mahima Sharma</strong>
+          </div>
+          <div class="profile-meta-group">
+            <span class="report-meta-label">Email:</span>
+            <span id="report-p-email" class="mono-text">mahima@latency.systems</span>
+          </div>
+          <div class="profile-meta-group">
+            <span class="report-meta-label">Profession:</span>
+            <span id="report-p-profession" class="badge badge-secondary">Neurologist</span>
+          </div>
+        </div>
+
+        <div class="report-grid">
+          
+          <!-- Left side: Trends Charts -->
+          <div class="report-charts-column">
+            <div class="chart-container-block">
+              <span class="chart-title">30-Day Sleep Duration vs. Perceived Stress</span>
+              <canvas id="chart-sleep-stress" width="560" height="150"></canvas>
+            </div>
+            <div class="chart-container-block" style="margin-top: 12px;">
+              <span class="chart-title">30-Day Autonomic Recovery (RMSSD) vs. Alertness (PVT RT)</span>
+              <canvas id="chart-hrv-pvt" width="560" height="150"></canvas>
+            </div>
+            <div class="chart-container-block" style="margin-top: 12px;">
+              <span class="chart-title">Fatigue Risk Index (FRI) Trajectory</span>
+              <canvas id="chart-fri-trend" width="560" height="120"></canvas>
+            </div>
+          </div>
+
+          <!-- Right side: Diagnostics summary & NASA guidelines -->
+          <div class="report-summary-column">
+            
+            <div class="summary-card">
+              <h3>Diagnostic Averages (30-Day Cohort)</h3>
+              <table class="summary-report-table">
+                <tr>
+                  <td>Sleep Duration (PSQI)</td>
+                  <td id="avg-report-sleep" class="text-right font-mono">--</td>
+                </tr>
+                <tr>
+                  <td>Stress Index (PSS)</td>
+                  <td id="avg-report-stress" class="text-right font-mono">--</td>
+                </tr>
+                <tr>
+                  <td>Alertness RT (PVT)</td>
+                  <td id="avg-report-pvt" class="text-right font-mono">--</td>
+                </tr>
+                <tr>
+                  <td>Working Memory (N-Back)</td>
+                  <td id="avg-report-memory" class="text-right font-mono">--</td>
+                </tr>
+                <tr>
+                  <td>Executive Interference (Stroop)</td>
+                  <td id="avg-report-control" class="text-right font-mono">--</td>
+                </tr>
+                <tr>
+                  <td>Vagal Autonomic Tone (RMSSD)</td>
+                  <td id="avg-report-hrv" class="text-right font-mono">--</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td>Mean Fatigue Risk Index (FRI)</td>
+                  <td id="avg-report-fri" class="text-right font-mono font-bold">--</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="summary-card countermeasure-card" style="margin-top: 12px;">
+              <h3>NASA Human Research Program Countermeasures</h3>
+              <div id="report-countermeasures-list">
+                <!-- Dynamically populated based on metrics -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Logic Script -->
+  <script src="app.js"></script>
+</body>
+</html>
