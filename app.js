@@ -175,6 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const BUCKET_ID = '3JQP7GdTouH5Sq4CWzib3W';
+  const CLOUD_URL = `https://kvdb.io/${BUCKET_ID}/`;
+
   function loadData() {
     initDB().then(() => {
       // Migrate from localStorage if needed (backward compatibility & data protection)
@@ -206,23 +209,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadFromIndexedDB() {
     dbGetAllParticipants().then(result => {
       participants = result;
-      // Sort: newly enrolled first
-      participants.sort((a, b) => {
-        return (b.dateEnrolled || '').localeCompare(a.dateEnrolled || '') || (a.email || '').localeCompare(b.email || '');
-      });
-      participants.forEach(p => {
-        p.logs = p.logs || [];
-      });
-      currentPage = 1;
-      renderTable();
-      calculateTelemetry();
-      if (activeUser) {
-        const reloadedUser = participants.find(p => p.email.toLowerCase() === activeUser.email.toLowerCase());
-        if (reloadedUser) {
-          activeUser = reloadedUser;
-        }
-      }
+      sortAndRefreshUI();
+      syncFromCloud();
     });
+  }
+
+  function sortAndRefreshUI() {
+    // Sort: newly enrolled first
+    participants.sort((a, b) => {
+      return (b.dateEnrolled || '').localeCompare(a.dateEnrolled || '') || (a.email || '').localeCompare(b.email || '');
+    });
+    participants.forEach(p => {
+      p.logs = p.logs || [];
+    });
+    currentPage = 1;
+    renderTable();
+    calculateTelemetry();
+    if (activeUser) {
+      const reloadedUser = participants.find(p => p.email.toLowerCase() === activeUser.email.toLowerCase());
+      if (reloadedUser) {
+        activeUser = reloadedUser;
+      }
+    }
   }
 
   // Save changes to IndexedDB and refresh views
@@ -231,13 +239,87 @@ document.addEventListener('DOMContentLoaded', () => {
       dbSaveParticipant(modifiedParticipant).then(() => {
         renderTable();
         calculateTelemetry();
+        pushParticipantToCloud(modifiedParticipant);
       });
     } else {
       dbBulkSaveParticipants(participants).then(() => {
         renderTable();
         calculateTelemetry();
+        participants.forEach(p => pushParticipantToCloud(p));
       });
     }
+  }
+
+  function pushParticipantToCloud(p) {
+    const key = `p_${encodeURIComponent(p.email.toLowerCase())}`;
+    fetch(`${CLOUD_URL}${key}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(p)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Cloud save failed');
+      console.log(`Saved participant ${p.email} to cloud.`);
+    })
+    .catch(err => {
+      console.warn(`Failed to push ${p.email} to cloud (cached locally):`, err);
+    });
+  }
+
+  function syncFromCloud() {
+    console.log('Syncing participants from cloud...');
+    fetch(`${CLOUD_URL}?prefix=p_&values=true&format=json&limit=10000`)
+      .then(response => {
+        if (!response.ok) throw new Error('Cloud fetch failed');
+        return response.json();
+      })
+      .then(data => {
+        let remoteModified = false;
+        const remotePromises = [];
+
+        data.forEach(([key, valueStr]) => {
+          try {
+            const remoteP = JSON.parse(valueStr);
+            if (!remoteP || !remoteP.email) return;
+
+            const localIndex = participants.findIndex(p => p.email.toLowerCase() === remoteP.email.toLowerCase());
+            if (localIndex === -1) {
+              participants.push(remoteP);
+              remotePromises.push(dbSaveParticipant(remoteP));
+              remoteModified = true;
+            } else {
+              const localP = participants[localIndex];
+              const remoteLogsCount = remoteP.logs ? remoteP.logs.length : 0;
+              const localLogsCount = localP.logs ? localP.logs.length : 0;
+              
+              const remoteTime = remoteP.lastLoggedAt || 0;
+              const localTime = localP.lastLoggedAt || 0;
+
+              if (remoteLogsCount > localLogsCount || (remoteLogsCount === localLogsCount && remoteTime > localTime)) {
+                participants[localIndex] = remoteP;
+                remotePromises.push(dbSaveParticipant(remoteP));
+                remoteModified = true;
+              }
+            }
+          } catch(e) {
+            console.error('Failed to parse remote participant:', e);
+          }
+        });
+
+        if (remoteModified) {
+          Promise.all(remotePromises).then(() => {
+            console.log('Cloud sync complete: Local database updated.');
+            sortAndRefreshUI();
+          });
+        } else {
+          console.log('Cloud sync complete: Local database is up to date.');
+        }
+      })
+      .catch(err => {
+        console.warn('Background cloud sync failed (working offline):', err);
+      });
   }
 
   // ==========================================================================
